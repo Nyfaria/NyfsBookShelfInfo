@@ -17,6 +17,11 @@ pluginManagement {
             name 'ParchmentMC'
             url 'https://maven.parchmentmc.org'
         }
+        maven {
+            name '100Media'
+            url 'https://maven.100media.dev'
+        }
+        mavenLocal()
     }
     resolutionStrategy {
         eachPlugin {
@@ -28,5 +33,5 @@ pluginManagement {
 }
 
 
-rootProject.name = "nyfsmultiloader"
+rootProject.name = "nyfsgenetics"
 include("Common", "Fabric", "Forge")
