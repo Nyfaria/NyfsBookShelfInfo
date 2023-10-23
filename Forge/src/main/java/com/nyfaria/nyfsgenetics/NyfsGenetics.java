@@ -8,7 +8,6 @@ import com.nyfaria.nyfsgenetics.datagen.ModLootTableProvider;
 import com.nyfaria.nyfsgenetics.datagen.ModRecipeProvider;
 import com.nyfaria.nyfsgenetics.datagen.ModSoundProvider;
 import com.nyfaria.nyfsgenetics.datagen.ModTagProvider;
-import com.nyfaria.nyfsgenetics.init.DataSerializerInit;
 import com.nyfaria.nyfsgenetics.network.NetworkHandler;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
