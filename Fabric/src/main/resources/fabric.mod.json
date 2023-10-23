@@ -12,10 +12,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.nyfaria.nyfsgenetics.ExampleMod"
+      "com.nyfaria.nyfsgenetics.NyfsGenetics"
     ],
     "client": [
-      "com.nyfaria.nyfsgenetics.ExampleModClient"
+      "com.nyfaria.nyfsgenetics.NyfsGeneticsClient"
+    ],
+    "cardinal-components": [
+      "com.nyfaria.nyfsgenetics.cap.VillagerGeneticsHolderAttacher"
     ]
   },
   "mixins": [
@@ -29,6 +32,11 @@
   },
   "suggests": {
     "another-mod": "*"
+  },
+  "custom": {
+    "cardinal-components": [
+      "nyfsgenetics:villager_genetics"
+    ]
   }
 }
   

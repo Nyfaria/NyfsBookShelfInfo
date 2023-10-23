@@ -1,5 +1,6 @@
 package com.nyfaria.nyfsgenetics.platform.services;
 
+import com.nyfaria.nyfsgenetics.api.VillagerGenes;
 import com.nyfaria.nyfsgenetics.traits.EyeBrow;
 import com.nyfaria.nyfsgenetics.traits.EyeColor;
 import com.nyfaria.nyfsgenetics.traits.HairColor;
@@ -42,51 +43,6 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
-
-    EyeColor getVillagerEyeColor(Villager villagerEntity);
-
-    HairColor getVillagerHairColor(Villager villagerEntity);
-
-    Height getVillagerHeight(Villager villagerEntity);
-
-    void setVillagerEyeColor(Villager villagerEntity, EyeColor eyeColor);
-
-    void setVillagerHairColor(Villager villagerEntity, HairColor hairColor);
-
-    boolean isVillagerInitialized(Villager villagerEntity);
-
-    void setVillagerInitialized(Villager villagerEntity, boolean initialized);
-
-    void initialize(Villager villagerEntity, EyeColor eyeColor, Height height, NoseSize noseSize, SkinTone skinTone, HairColor hairColor, HairType hairType, EyeBrow eyeBrow);
-
-    default void initialize(Villager villagerEntity) {
-        initialize(villagerEntity,
-                EyeColor.getRandomEyeColor(),
-                Height.getRandomHeight(),
-                NoseSize.getRandomNoseSize(),
-                SkinTone.getRandomSkinTone(),
-                HairColor.getRandomHairColor(),
-                HairType.getRandomHairType(),
-                EyeBrow.getRandomEyeBrow()
-        );
-    }
-
-    NoseSize getVillagerNoseSize(Villager villager);
-
-    SkinTone getVillagerSkinTone(Villager villager);
-
-    HairType getVillagerHairType(Villager villager);
-
-    EyeBrow getVillagerEyeBrow(Villager villager);
-
-    void setVillagerSkinTone(Villager villager, SkinTone tone);
-
-    void setVillagerHairType(Villager villager, HairType type);
-
-    void setVillagerEyebrow(Villager villager, EyeBrow type);
-
-    void setVillagerHeight(Villager villager, Height height);
-
-    void setVillagerNoseSize(Villager villager, NoseSize size);
-    void update(Villager villagerEntity);
+    
+    VillagerGenes getVillagerGenes(Villager villagerEntity);
 }

@@ -2,6 +2,7 @@ plugins {
     id 'fabric-loom' version '1.0-SNAPSHOT'
     id 'maven-publish'
     id 'idea'
+    id "me.modmuss50.mod-publish-plugin" version "0.3.3"
 }
 
 archivesBaseName = "${mod_id}-fabric-${minecraft_version}"
@@ -10,12 +11,17 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.19.3:2023.03.12@zip")
+        parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
     }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":Common")
+    // Adds a dependency on the base cardinal components module (required by every other module)
+    // Replace modImplementation with modApi if you expose components in your own API
+    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.2"))
+    // Adds a dependency on a specific module
+    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.2.2"))
 }
 
 loom {
@@ -90,6 +96,35 @@ publishing {
     repositories {
         maven {
             url "file://" + System.getenv("local_maven")
+        }
+    }
+}
+publishMods {
+    if(publishFabric) {
+        file = remapJar.archiveFile
+        changelog = project(":Common").file("changelog.md").text
+        type = STABLE
+        modLoaders.add("fabric")
+        displayName = "${mod_name}-${minecraft_version}-[Fabric]-${project.property('version')}"
+        if (curseforge_publishing_enabled.toBoolean()) {
+            curseforge {
+                projectId = curseforge_project_id
+                accessToken = curseforge_token
+                minecraftVersions.add(minecraft_version)
+                requires {
+                    slug = "fabric-api"
+                }
+            }
+        }
+        if (modrinth_publishing_enabled.toBoolean()) {
+            modrinth {
+                accessToken = modrinth_token
+                projectId = modrinth_project_id
+                minecraftVersions.add(minecraft_version)
+                requires {
+                    slug = "fabric-api"
+                }
+            }
         }
     }
 }

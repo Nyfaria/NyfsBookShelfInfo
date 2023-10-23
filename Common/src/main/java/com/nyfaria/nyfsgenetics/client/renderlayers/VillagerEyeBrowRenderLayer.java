@@ -2,6 +2,7 @@ package com.nyfaria.nyfsgenetics.client.renderlayers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.nyfaria.nyfsgenetics.Constants;
+import com.nyfaria.nyfsgenetics.api.VillagerGenes;
 import com.nyfaria.nyfsgenetics.platform.Services;
 import com.nyfaria.nyfsgenetics.traits.EyeBrow;
 import com.nyfaria.nyfsgenetics.traits.HairColor;
@@ -21,10 +22,11 @@ public class VillagerEyeBrowRenderLayer<T extends Villager, M extends EntityMode
 
     public void render(PoseStack p_117646_, MultiBufferSource p_117647_, int p_117648_, T villager, float p_117650_, float p_117651_, float p_117652_, float p_117653_, float p_117654_, float p_117655_) {
         if (!villager.isInvisible()) {
+            VillagerGenes genes = Services.PLATFORM.getVillagerGenes(villager);
             M m = this.getParentModel();
-            HairColor hairColor = Services.PLATFORM.getVillagerHairColor(villager);
-            EyeBrow eyeBrow = Services.PLATFORM.getVillagerEyeBrow(villager);
-            SkinTone skinTone = Services.PLATFORM.getVillagerSkinTone(villager);
+            HairColor hairColor = genes.getHairColor();
+            EyeBrow eyeBrow = genes.getEyeBrow();
+            SkinTone skinTone = genes.getSkinTone();
             String eyeBrowString = "";
             if(eyeBrow == EyeBrow.NONE){
                 eyeBrowString = eyeBrow.getName() + "_" + skinTone.getName();

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class VillagerRendererMixin {
     @Inject(method="getTextureLocation(Lnet/minecraft/world/entity/npc/Villager;)Lnet/minecraft/resources/ResourceLocation;", at=@At("HEAD"), cancellable = true)
     public void getTexture(Villager villager, CallbackInfoReturnable<ResourceLocation> cir){
-        SkinTone skinTone = Services.PLATFORM.getVillagerSkinTone(villager);
+        SkinTone skinTone = Services.PLATFORM.getVillagerGenes(villager).getSkinTone();
         if(skinTone != null){
             cir.setReturnValue(new ResourceLocation(Constants.MODID, "textures/entity/villager/" + skinTone.getName() + "_villager.png"));
         }

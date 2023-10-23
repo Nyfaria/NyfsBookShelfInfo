@@ -8,6 +8,7 @@
   ],
   "client": [
     "ExampleMixin",
+    "LivingEntityRenderMixin",
     "MobRendererMixin",
     "VillagerRendererMixin"
   ],

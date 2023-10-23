@@ -18,7 +18,7 @@ public class MobRendererMixin {
     public void renderStart(Mob mob, float $$1, float $$2, PoseStack poseStack, MultiBufferSource $$4, int $$5, CallbackInfo ci) {
         if(mob instanceof Villager villagerGenes){
             if(mob.isBaby())return;
-            float scale = Services.PLATFORM.getVillagerHeight(villagerGenes).scale();
+            float scale = Services.PLATFORM.getVillagerGenes(villagerGenes).getHeight().scale();
             poseStack.scale(scale, scale, scale);
         }
     }
@@ -26,7 +26,7 @@ public class MobRendererMixin {
     public void renderEnd(Mob mob, float $$1, float $$2, PoseStack poseStack, MultiBufferSource $$4, int $$5, CallbackInfo ci) {
         if(mob instanceof Villager villagerGenes){
             if(mob.isBaby())return;
-            float scale = 1f/Services.PLATFORM.getVillagerHeight(villagerGenes).scale();
+            float scale = 1f/Services.PLATFORM.getVillagerGenes(villagerGenes).getHeight().scale();
             poseStack.scale(scale, scale, scale);
         }
     }

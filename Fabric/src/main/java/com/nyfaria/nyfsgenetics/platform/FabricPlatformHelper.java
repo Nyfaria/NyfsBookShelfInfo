@@ -1,5 +1,7 @@
 package com.nyfaria.nyfsgenetics.platform;
 
+import com.nyfaria.nyfsgenetics.api.VillagerGenes;
+import com.nyfaria.nyfsgenetics.cap.VillagerGeneticsHolderAttacher;
 import com.nyfaria.nyfsgenetics.platform.services.IPlatformHelper;
 import com.nyfaria.nyfsgenetics.traits.EyeBrow;
 import com.nyfaria.nyfsgenetics.traits.EyeColor;
@@ -31,92 +33,8 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public EyeColor getVillagerEyeColor(Villager villagerEntity) {
-        return null;
+    public VillagerGenes getVillagerGenes(Villager villagerEntity) {
+        return VillagerGeneticsHolderAttacher.GENETICS.get(villagerEntity);
     }
 
-    @Override
-    public HairColor getVillagerHairColor(Villager villagerEntity) {
-        return null;
-    }
-
-    @Override
-    public Height getVillagerHeight(Villager villagerEntity) {
-        return null;
-    }
-
-    @Override
-    public void setVillagerEyeColor(Villager villagerEntity, EyeColor eyeColor) {
-
-    }
-
-    @Override
-    public void setVillagerHairColor(Villager villagerEntity, HairColor hairColor) {
-
-    }
-
-    @Override
-    public boolean isVillagerInitialized(Villager villagerEntity) {
-        return false;
-    }
-
-    @Override
-    public void setVillagerInitialized(Villager villagerEntity, boolean initialized) {
-
-    }
-
-    @Override
-    public void initialize(Villager villagerEntity, EyeColor eyeColor, Height height, NoseSize noseSize, SkinTone skinTone, HairColor hairColor, HairType hairType, EyeBrow eyeBrow) {
-
-    }
-
-    @Override
-    public NoseSize getVillagerNoseSize(Villager villager) {
-        return null;
-    }
-
-    @Override
-    public SkinTone getVillagerSkinTone(Villager villager) {
-        return null;
-    }
-
-    @Override
-    public HairType getVillagerHairType(Villager villager) {
-        return null;
-    }
-
-    @Override
-    public EyeBrow getVillagerEyeBrow(Villager villager) {
-        return null;
-    }
-
-    @Override
-    public void setVillagerSkinTone(Villager villager, SkinTone tone) {
-
-    }
-
-    @Override
-    public void setVillagerHairType(Villager villager, HairType type) {
-
-    }
-
-    @Override
-    public void setVillagerEyebrow(Villager villager, EyeBrow type) {
-
-    }
-
-    @Override
-    public void setVillagerHeight(Villager villager, Height height) {
-
-    }
-
-    @Override
-    public void setVillagerNoseSize(Villager villager, NoseSize size) {
-
-    }
-
-    @Override
-    public void update(Villager villagerEntity) {
-
-    }
 }

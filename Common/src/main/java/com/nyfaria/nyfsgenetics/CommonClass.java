@@ -12,9 +12,6 @@ import net.minecraft.network.syncher.EntityDataSerializer;
 // common compatible binaries. This means common code can not directly use loader specific concepts such as Forge events
 // however it will be compatible with all supported mod loaders.
 public class CommonClass {
-    public static final EntityDataSerializer<EyeColor> EYE_COLOR = EntityDataSerializer.simpleEnum(EyeColor.class);
-    public static final EntityDataSerializer<Height> HEIGHT = EntityDataSerializer.simpleEnum(Height.class);
-
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some

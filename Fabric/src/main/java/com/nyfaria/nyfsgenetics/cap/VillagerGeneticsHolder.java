@@ -1,7 +1,6 @@
 package com.nyfaria.nyfsgenetics.cap;
 
 import com.nyfaria.nyfsgenetics.api.VillagerGenes;
-import com.nyfaria.nyfsgenetics.network.NetworkHandler;
 import com.nyfaria.nyfsgenetics.traits.EyeBrow;
 import com.nyfaria.nyfsgenetics.traits.EyeColor;
 import com.nyfaria.nyfsgenetics.traits.HairColor;
@@ -9,14 +8,14 @@ import com.nyfaria.nyfsgenetics.traits.HairType;
 import com.nyfaria.nyfsgenetics.traits.Height;
 import com.nyfaria.nyfsgenetics.traits.NoseSize;
 import com.nyfaria.nyfsgenetics.traits.SkinTone;
-import dev._100media.capabilitysyncer.core.EntityCapability;
-import dev._100media.capabilitysyncer.network.EntityCapabilityStatusPacket;
-import dev._100media.capabilitysyncer.network.SimpleEntityCapabilityStatusPacket;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentV3;
+import dev.onyxstudios.cca.api.v3.component.CopyableComponent;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.simple.SimpleChannel;
 
-public class VillagerGeneticsHolder extends EntityCapability implements VillagerGenes {
+public class VillagerGeneticsHolder implements ComponentV3, Component, CopyableComponent<VillagerGeneticsHolder>, AutoSyncedComponent, VillagerGenes {
     private EyeColor eyeColor = EyeColor.GREEN;
     private Height height = Height.NORMAL;
     private NoseSize noseSize = NoseSize.NORMAL;
@@ -26,15 +25,15 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
     private EyeBrow eyeBrow = EyeBrow.NORMAL;
 
     private boolean initialized = false;
+    private final Entity entity;
 
     protected VillagerGeneticsHolder(Entity entity) {
-        super(entity);
+        this.entity = entity;
     }
 
 
     @Override
-    public CompoundTag serializeNBT(boolean savingToDisk) {
-        CompoundTag tag = new CompoundTag();
+    public void writeToNbt(CompoundTag tag) {
         tag.putString("eyeColor", this.getEyeColor().getName());
         tag.putString("height", this.getHeight().getName());
         tag.putString("noseSize", this.getNoseSize().getName());
@@ -43,11 +42,10 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
         tag.putString("hairType", this.getHairType().getName());
         tag.putString("eyeBrow", this.getEyeBrow().getName());
         tag.putBoolean("initialized", this.initialized);
-        return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt, boolean readingFromDisk) {
+    public void readFromNbt(CompoundTag nbt) {
         this.eyeColor = EyeColor.byName(nbt.getString("eyeColor"));
         this.height = Height.byName(nbt.getString("height"));
         this.noseSize = NoseSize.byName(nbt.getString("noseSize"));
@@ -72,6 +70,8 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
 
     public void setHairColor(HairColor hairColor, boolean update) {
         this.hairColor = hairColor;
+        if(update)
+            updateTracking();
     }
 
     public HairType getHairType() {
@@ -80,6 +80,8 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
 
     public void setHairType(HairType hairType, boolean update) {
         this.hairType = hairType;
+        if(update)
+            updateTracking();
     }
 
     public EyeColor getEyeColor() {
@@ -94,10 +96,14 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
 
     public void setEyeBrow(EyeBrow eyeBrow, boolean update) {
         this.eyeBrow = eyeBrow;
+        if(update)
+            updateTracking();
     }
 
     public void setEyeColor(EyeColor eyeColor, boolean update) {
         this.eyeColor = eyeColor;
+        if(update)
+            updateTracking();
     }
 
     public Height getHeight() {
@@ -108,6 +114,8 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
 
     public void setHeight(Height height, boolean update) {
         this.height = height;
+        if(update)
+            updateTracking();
     }
 
     public NoseSize getNoseSize() {
@@ -116,15 +124,17 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
 
     public void setNoseSize(NoseSize noseSize, boolean update) {
         this.noseSize = noseSize;
+        if(update)
+            updateTracking();
     }
 
     public boolean isInitialized() {
         return initialized;
     }
 
-    public void setInitialized(boolean initialized) {
-        this.initialized = initialized;
-        updateTracking();
+
+    private void updateTracking() {
+        VillagerGeneticsHolderAttacher.GENETICS.sync(entity);
     }
 
     public void initialize() {
@@ -138,14 +148,20 @@ public class VillagerGeneticsHolder extends EntityCapability implements Villager
                 EyeBrow.getRandomEyeBrow()
         );
     }
-
-    @Override
-    public EntityCapabilityStatusPacket createUpdatePacket() {
-        return new SimpleEntityCapabilityStatusPacket(this.entity.getId(), VillagerGeneticsHolderAttacher.RESOURCE_LOCATION, this);
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+        updateTracking();
     }
 
     @Override
-    public SimpleChannel getNetworkChannel() {
-        return NetworkHandler.INSTANCE;
+    public void copyFrom(VillagerGeneticsHolder other) {
+        this.eyeColor = other.eyeColor;
+        this.height = other.height;
+        this.noseSize = other.noseSize;
+        this.skinTone = other.skinTone;
+        this.hairColor = other.hairColor;
+        this.hairType = other.hairType;
+        this.eyeBrow = other.eyeBrow;
+        this.initialized = other.initialized;
     }
 }
