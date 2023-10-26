@@ -11,7 +11,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
+        parchment("org.parchmentmc.data:parchment-1.20.1:2023.07.09@zip")
     }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
@@ -25,6 +25,10 @@ dependencies {
 }
 
 loom {
+
+    if (project.hasProperty('fabric_aws_enabled') && project.findProperty('fabric_aws_enabled').toBoolean()) {
+        accessWidenerPath = project(":Common").file("src/main/resources/mhef.accesswidener")
+    }
     runs {
         client {
             client()
@@ -39,21 +43,24 @@ loom {
             runDir("run")
         }
     }
+    mixin {
+        defaultRefmapName = "${mod_id}.refmap.json"
+    }
 }
-def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', "${mod_id}.mixins.json".toString(),'fabric.mod.json']
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', "${mod_id}.mixins.json".toString(), 'fabric.mod.json']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
 def replaceProperties =
         [
-                mod_id: mod_id,
-                mod_name: mod_name,
-                mod_version: version,
-                mod_authors: mod_author,
-                mod_description: mod_description,
-                minecraft_version_range: minecraft_version_range,
-                forge_version_range: forge_version_range,
-                loader_version_range: loader_version_range,
+                mod_id                     : mod_id,
+                mod_name                   : mod_name,
+                mod_version                : version,
+                mod_authors                : mod_author,
+                mod_description            : mod_description,
+                minecraft_version_range    : minecraft_version_range,
+                forge_version_range        : forge_version_range,
+                loader_version_range       : loader_version_range,
                 fabric_loader_version_range: fabric_loader_version_range,
-                minecraft_version: minecraft_version
+                minecraft_version          : minecraft_version
         ]
 
 processResources {
@@ -106,6 +113,7 @@ publishMods {
         type = STABLE
         modLoaders.add("fabric")
         displayName = "${mod_name}-${minecraft_version}-[Fabric]-${project.property('version')}"
+        dryRun = dry_run.toBoolean()
         if (curseforge_publishing_enabled.toBoolean()) {
             curseforge {
                 projectId = curseforge_project_id

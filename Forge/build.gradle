@@ -10,7 +10,7 @@ plugins {
 }
 
 archivesBaseName = "${mod_id}-forge-${minecraft_version}"
-
+jarJar.enable()
 minecraft {
     mappings channel: mappings_channel, version: mappings_version
 
@@ -148,8 +148,19 @@ processResources {
     }
 }
 
-
-jar.finalizedBy('reobfJar')
+reobf {
+    jarJar {}
+}
+afterEvaluate {
+    reobfJar {
+        enabled = false
+    }
+    jar.finalizedBy reobfJar
+    tasks.jarJar.finalizedBy reobfJarJar
+}
+tasks.jarJar {
+    archiveClassifier = ''
+}
 
 publishing {
     publications {
@@ -157,7 +168,7 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact jar
+            artifact tasks.jarJar
         }
     }
     repositories {
@@ -166,9 +177,10 @@ publishing {
         }
     }
 }
+reg.configureJarTask(tasks.jarJar)
 publishMods {
     if(publishForge) {
-        file = jar.archiveFile
+        file = tasks.jarJar.archiveFile
         changelog = project(":Common").file("changelog.md").text
         type = STABLE
         modLoaders.add("forge")
